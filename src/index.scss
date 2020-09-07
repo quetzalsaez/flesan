@@ -324,8 +324,7 @@ flex-direction: column;
 }
 .agregar-item__contenedor {
   flex: 1;
-  background-color: $color-claro;
-  margin: 0 0 7px 0;
+  background-color: $color-claro;  
   border-radius: 10px;
   padding: 0 7px 7px 7px;
 }
@@ -360,6 +359,45 @@ flex-direction: column;
   color: $blanco;
 }
 
+.agregar-item__filtros {
+  background: rgba(0, 0, 0, 0.619);
+  .modal-dialog {
+    top: 15vh;
+
+    .modal-content {
+      background: $color-oscuro;
+      border-radius: 10px;    
+      padding: 0;
+      border: none;
+    } 
+  } 
+  .modal-header {
+    background: $color-claro;
+    border-radius: 10px 10px 0 0;
+    border: none;   
+    padding: 7px; 
+    i.material-icons {
+      color: $negro;
+    }
+    .close {
+      margin-right: -10px;
+    }
+  }
+}
+.agregar-item__filtros__input {
+  background: $color-claro;
+}
+.agregar-item__filtros__categorias {
+  flex-wrap: wrap;
+  justify-content: space-between;
+  button {
+    border-radius: 7px;
+    padding: 5px;
+    margin: 0 5px 10px 0;    
+    background: $color-claro;
+  }
+}
+
 /* ------------------------------ item --------------------------- */
 .item {  
   background: $color-oscuro;
@@ -368,6 +406,8 @@ flex-direction: column;
   padding: 7px;
   color: $blanco;
   line-height: 17px;
+  align-items: center;
+  text-align: left;
 }
 .item__nombre {
   line-height: 17px;
@@ -384,4 +424,33 @@ flex-direction: column;
 }
 .item__elementos__titulo {
   color: $negro;  
+}
+
+/* --------------------------------------- Detalle Item ----------------------------- */
+.detalle-item__contenedor {
+  flex-direction: column;
+  justify-content: space-between;
+  height: calc(100vh - 60px);
+}
+.detalle-item__contenedor__detalle {
+  .item {
+    margin-top: 0;
+  }
+}
+.detalle-item__contenedor__detalle__inputs {
+  background: $color-claro;
+  margin-top: 7px;
+  padding: 10px;
+  border-radius: 7px;
+  input {
+    background-color: $color-oscuro;
+    width: 100%;
+    border-radius: 7px;
+    margin-bottom: 7px;
+    padding: 7px;
+    color: $blanco;
+    &:nth-child(3) {
+      margin-bottom: 0;
+    } 
+  }
 }

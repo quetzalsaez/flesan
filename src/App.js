@@ -16,6 +16,7 @@ import {
 import Main from './Main';
 import GenerarSolicitud from './GenerarSolicitud';
 import AgregarItem from './AgregarItem';
+import DetalleItem from './DetalleItem';
 
 export default function App() {
     return (
@@ -24,6 +25,7 @@ export default function App() {
         <Route exact path="/main" component={Main} /> 
         <Route exact path="/generarSolicitud" component={GenerarSolicitud} /> 
         <Route exact path="/agregarItem" component={AgregarItem} /> 
+        <Route exact path="/detalleItem" component={DetalleItem} /> 
       </Switch>
     )
 }
