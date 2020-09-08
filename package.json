@@ -33,7 +33,7 @@
     "react-scripts": "3.4.3",
     "typescript": "^4.0.2"
   },
-  "proxy": "http://localhost:4000",
+  "proxy": "http://localhost:3000",
   "scripts": {
     "build": "node ./buildScript",
     "start-front": "react-scripts start",
