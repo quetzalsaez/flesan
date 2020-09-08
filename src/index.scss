@@ -454,3 +454,28 @@ flex-direction: column;
     } 
   }
 }
+
+/* ---------------------------------------- Pantalla final --------------------------------- */
+.pantalla-final {
+  flex-direction: column;  
+  height: 100%;
+  align-items: center;  
+  button {
+    width: 100%;
+  }
+}
+.pantalla-final__contenedor {
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  i.material-icons {
+    color: $blanco;
+    font-size: 200px;
+  }
+  p {
+    color: $blanco;
+    font-size: 20px;
+    text-align: center;
+  }
+}
