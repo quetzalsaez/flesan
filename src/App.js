@@ -37,9 +37,10 @@ function LoginButton(props) {
   let history = useHistory();
 
   function handleClick() {
-    console.log(props.name+props.pass);  
+    console.log(props.name+props.pass);      
+    document.activeElement.blur();
     hideVirtualKeyboard();  
-    history.push("/main");
+    /* history.push("/main"); */
   }
 
   return (
