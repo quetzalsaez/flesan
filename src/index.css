@@ -476,4 +476,30 @@ p {
   margin-bottom: 0;
 }
 
+/* ---------------------------------------- Pantalla final --------------------------------- */
+.pantalla-final {
+  flex-direction: column;
+  height: 100%;
+  align-items: center;
+}
+.pantalla-final button {
+  width: 100%;
+}
+
+.pantalla-final__contenedor {
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.pantalla-final__contenedor i.material-icons {
+  color: #fff;
+  font-size: 200px;
+}
+.pantalla-final__contenedor p {
+  color: #fff;
+  font-size: 20px;
+  text-align: center;
+}
+
 /*# sourceMappingURL=index.css.map */

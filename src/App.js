@@ -17,6 +17,7 @@ import Main from './Main';
 import GenerarSolicitud from './GenerarSolicitud';
 import AgregarItem from './AgregarItem';
 import DetalleItem from './DetalleItem';
+import PantallaFinal from './PantallaFinal';
 
 export default function App() {
     return (
@@ -26,6 +27,7 @@ export default function App() {
         <Route exact path="/generarSolicitud" component={GenerarSolicitud} /> 
         <Route exact path="/agregarItem" component={AgregarItem} /> 
         <Route exact path="/detalleItem" component={DetalleItem} /> 
+        <Route exact path="/pantallaFinal" component={PantallaFinal} /> 
       </Switch>
     )
 }
@@ -53,20 +55,31 @@ class Login extends React.Component {
       this.handleSubmit = this.handleSubmit.bind(this);
     }    
   
-    getData() {
-      // create a new XMLHttpRequest
-      /* var xhr = new XMLHttpRequest()
-  
-      // get a callback when the server responds
-      xhr.addEventListener('load', () => {
-        // update the state of the component with the result here
-        console.log(xhr.responseText)
-      })
-      // open the request with the verb and the url
-      xhr.open('POST', 'https://dog.ceo/api/breeds/list/all')
-      // send the request
-      xhr.send(JSON.stringify({ data: {"Password": "ADM2019", "UserName": "77522330-8"} })) */
-      console.log('hola');    
+    async getData() {      
+      /* const response = await axios.get(
+        'http://conectadev.portal.vsoft.cl/api/jsonws/vs-bpm-screen-portlet.customize/get-list-obras',
+        { data: {companyId: 25728, groupId: 25754, userId: 223645} },      
+        { headers: {'Authorization': 'UwnjnP6AbTQsc6bN9cx7',  'Access-Control-Allow-Origin': "*", 'Content-Type': 'application/json'} }
+      ).then((response) => {
+        console.log(response.data)  
+      }) 
+      console.log('hola'); */ 
+      fetch('http://conectadev.portal.vsoft.cl/api/jsonws/vs-bpm-screen-portlet.customize/get-list-obras', {
+        headers: {
+          'Authorization': 'Basic YXBpbW9iaWxlOi52ZXJ0aWNhbGwjMjAyMC4=',
+          'Content-Type': 'application/json',
+          /* 'Access-Control-Allow-Origin' : '*' */
+        },
+        body: {
+          'companyId': '25728',
+          'groupId': '25754',
+          'userId': '223645'
+        },
+        method: "POST",
+        mode: "no-cors"
+      }).then((response) => {
+        console.log(response)
+      }) 
     }
   
     handleChange(event) {
@@ -91,7 +104,7 @@ class Login extends React.Component {
         return (
         <div className="fondo-app-login flex">
             <div>
-              <img src={logo}/>             
+              <button onClick={this.getData}><img src={logo}/></button>             
             </div>       
             <form className='flex' onSubmit={this.handleSubmit}>
               <label><input className='input' name='nameValue' type="text" value={this.state.nameValue} placeholder='Nombre usuario' onChange={this.handleChange} /></label>
