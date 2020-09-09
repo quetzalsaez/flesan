@@ -18,6 +18,7 @@ import GenerarSolicitud from './GenerarSolicitud';
 import AgregarItem from './AgregarItem';
 import DetalleItem from './DetalleItem';
 import PantallaFinal from './PantallaFinal';
+import hideVirtualKeyboard from 'hide-virtual-keyboard';
 
 export default function App() {
     return (
