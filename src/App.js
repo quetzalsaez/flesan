@@ -50,9 +50,10 @@ function LoginButton(props) {
 class Login extends React.Component {
     constructor(props) {
       super(props);
-      this.state = {nameValue: '', passValue: ''};    
+      this.state = {nameValue: '', passValue: '', servicio: ''};    
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
+      this.getData = this.getData.bind(this);
     }    
   
     async getData() {      
@@ -78,7 +79,8 @@ class Login extends React.Component {
         method: "POST",
         mode: "no-cors"
       }).then((response) => {
-        alert(response.body);
+        /* alert(response.body); */
+        this.setState({servicio: String(response.body)});
       }) 
     }
   
@@ -109,7 +111,7 @@ class Login extends React.Component {
             <form className='flex' onSubmit={this.handleSubmit}>
               <label><input className='input' name='nameValue' type="text" value={this.state.nameValue} placeholder='Nombre usuario' onChange={this.handleChange} /></label>
               <label><input className='input' name='passValue' type="password" value={this.state.passValue} placeholder='Clave' onChange={this.handleChange} /></label>
-              
+              <p>{this.state.servicio != '' ? this.state.servicio : ''}</p>
               {/* <input type="submit" value="Login" />       */}                    
             </form>       
             <LoginButton name={this.state.nameValue} pass={this.state.passValue} />
