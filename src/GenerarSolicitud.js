@@ -58,7 +58,7 @@ function BackButton() {
     let history = useHistory();
   
     function handleClick() {    
-      /* history.push("/generarSolicitud"); */
+      history.push("/pantallaFinal");
     }
   
     return (

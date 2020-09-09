@@ -104,7 +104,7 @@ import {
       let history = useHistory();
     
       function handleClick() {    
-        history.push("/pantallaFinal");
+        history.push("/generarSolicitud");
       }
     
       return (
