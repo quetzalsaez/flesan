@@ -78,7 +78,7 @@ class Login extends React.Component {
         method: "POST",
         mode: "no-cors"
       }).then((response) => {
-        console.log(response)
+        alert(response.body);
       }) 
     }
   
