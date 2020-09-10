@@ -83,6 +83,7 @@ p {
     width: 60vw;
     border-radius: 15px;
     border: 2px solid $color-accion;
+    background-color: $blanco;
     padding: 5px;
     font-size: 15px;
   }
@@ -313,6 +314,7 @@ flex-direction: column;
   border-radius: 5px;
   padding: 7px;
   justify-content: space-between;
+  background-color: $blanco;
   i.material-icons {
     background-color: $color-accion;
     border-radius: 50%;

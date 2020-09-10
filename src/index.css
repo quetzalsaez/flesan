@@ -85,6 +85,7 @@ p {
   width: 60vw;
   border-radius: 15px;
   border: 2px solid #FDAF3B;
+  background-color: #fff;
   padding: 5px;
   font-size: 15px;
 }
@@ -325,6 +326,7 @@ p {
   border-radius: 5px;
   padding: 7px;
   justify-content: space-between;
+  background-color: #fff;
 }
 .generar-solicitud__lista-items__agregar-item i.material-icons {
   background-color: #FDAF3B;
