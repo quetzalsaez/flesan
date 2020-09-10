@@ -266,6 +266,8 @@ p {
   border: none;
   margin: 0;
   padding: 0;
+  font-size: 20px;
+  text-align: center;
 }
 .home.flex .nav-tabs .nav-link.active {
   background-color: #FDAF3B;
@@ -274,7 +276,8 @@ p {
   color: #000;
   padding: 0px 2px;
   margin: 0;
-  height: 25px;
+  height: 30px;
+  width: 50%;
 }
 .home .nav-tabs .nav-link {
   border-top-left-radius: 10px;
@@ -287,7 +290,8 @@ p {
   color: #000;
   padding: 0px 2px;
   margin: 0;
-  height: 25px;
+  height: 30px;
+  width: 50%;
 }
 .home .tab-pane.active {
   flex: 1 !important;
@@ -426,10 +430,12 @@ p {
   margin-top: 7px;
   border-radius: 7px;
   padding: 7px;
+  width: 100%;
   color: #fff;
   line-height: 17px;
   align-items: center;
   text-align: left;
+  justify-content: space-between;
 }
 
 .item__nombre {
