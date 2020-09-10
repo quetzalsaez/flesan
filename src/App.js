@@ -40,7 +40,7 @@ function LoginButton(props) {
     console.log(props.name+props.pass);      
     document.activeElement.blur();
     hideVirtualKeyboard();  
-    /* history.push("/main"); */
+    history.push("/main");
   }
 
   return (
