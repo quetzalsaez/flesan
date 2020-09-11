@@ -30,9 +30,9 @@ import {
             <div className="detalle-item__contenedor__detalle">
               <ItemDetalle />
               <div className="detalle-item__contenedor__detalle__inputs">
-                <input type="text" placeholder="Cant. Solicitada"/>
-                <input type="text" placeholder="Destino"/>
-                <input type="text" placeholder="Comentario"/>
+                <input className="shadow" type="text" placeholder="Cant. Solicitada"/>
+                <input className="shadow" type="text" placeholder="Destino"/>
+                <input className="shadow" type="text" placeholder="Comentario"/>
               </div>
             </div>            
             <BotonEnviar />

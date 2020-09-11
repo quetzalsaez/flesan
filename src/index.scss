@@ -266,7 +266,7 @@ p {
     color: $negro;
     padding: 0px 2px;
     margin: 0;
-    height: 30px;    
+    height: 100%;    
     width: 50%;
   }
   & .nav-tabs .nav-link {
@@ -280,8 +280,10 @@ p {
     color: $negro;
     padding: 0px 2px;
     margin: 0;
-    height: 30px;  
+    height: 100%;  
     width: 50%;
+    font-size: 5vw;
+    line-height: 24px;
   }
   .tab-pane.active {    
     flex: 1 !important;    
@@ -420,7 +422,7 @@ flex-direction: column;
   text-align: left;
   justify-content: space-between;
 }
-.item__nombre {g
+.item__nombre {
   line-height: 17px;
   font-size: 17px;
 }
@@ -431,7 +433,7 @@ flex-direction: column;
   margin-top: 5px;
 }
 .item__elementos__elemento {
-  margin-right: 10px;
+  margin-right: 15px;
 }
 .item__elementos__titulo {
   color: $negro;  

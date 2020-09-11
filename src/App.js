@@ -109,7 +109,8 @@ class Login extends React.Component {
         return (
         <div className="fondo-app-login flex">
             <div>
-              <button onClick={this.getData}><img src={logo}/></button>             
+              {/* <button onClick={this.getData}><img src={logo}/></button>              */}
+              <img src={logo}/>
             </div>       
             <form className='flex' onSubmit={this.handleSubmit}>
               <label><input className='input' name='nameValue' type="text" value={this.state.nameValue} placeholder='Nombre usuario' onChange={this.handleChange} /></label>
