@@ -11,12 +11,18 @@ import {
   Route,
   Link,  
 } from "react-router-dom";
+import store from './app/store'
+import { Provider } from 'react-redux'
 
 /* var browserHistory = Router.browserHistory; */
 
 ReactDOM.render(
-  <Router >      
-      <App />
-  </Router>,
+  <React.StrictMode>
+    <Provider store={store}>
+      <Router >      
+        <App />
+      </Router>,
+    </Provider>
+  </React.StrictMode>,  
   document.getElementById('root')
 );

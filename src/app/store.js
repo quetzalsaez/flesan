@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit'
 
-import postsReducer from '../features/posts/postsSlice'
+import materialesReducer from '../features/materiales/materialesSlice'
 
 export default configureStore({
   reducer: {
-    posts: postsReducer
+    materiales: materialesReducer
   }
 })

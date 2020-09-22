@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCoffee, faBuilding, faHashtag } from '@fortawesome/free-solid-svg-icons'
-import Tabs from 'react-bootstrap/Tabs'
-import Tab from 'react-bootstrap/Tab'
 import MaterialIcon, {colorPalette} from 'material-icons-react';
 import {
     BrowserRouter as Router,
@@ -11,36 +9,63 @@ import {
     Link,
     withRouter,
     useHistory
-  } from "react-router-dom";  
-  import Modal from 'react-bootstrap/Modal'
-  import ModalDialog from 'react-bootstrap/ModalDialog'
-  import ModalHeader from 'react-bootstrap/ModalHeader'
-  import ModalBody from 'react-bootstrap/ModalBody'
-  import Button from 'react-bootstrap/Button'
+  } from "react-router-dom";   
+  import { useDispatch } from 'react-redux';
+  import { materialAdded } from './features/materiales/materialesSlice';
+  import { nanoid } from '@reduxjs/toolkit'
 
-  class DetalleItem extends React.Component {
-    render() {
-        return (
-        <div className="fondo-app">
-          <div className="fondo-app__app-bar flex">
-              <BackButton />
-              <p className="t-center">Detalle Item</p>
-          </div>
-          <div className="detalle-item__contenedor flex">                      
-            <div className="detalle-item__contenedor__detalle">
-              <ItemDetalle />
-              <div className="detalle-item__contenedor__detalle__inputs">
-                <input className="shadow" type="text" placeholder="Cant. Solicitada"/>
-                <input className="shadow" type="text" placeholder="Destino"/>
-                <input className="shadow" type="text" placeholder="Comentario"/>
-              </div>
-            </div>            
-            <BotonEnviar />
-          </div>
-        </div>
-        );
+  export const DetalleItem = () => {
+    const [cant, setCant] = useState('')
+    const [destino, setDestino] = useState('')
+    const [comentario, setComentario] = useState('')
+
+    const dispatch = useDispatch()
+
+    const onCantChanged = e => setCant(e.target.value)
+    const onDestinoChanged = e => setDestino(e.target.value)
+    const onComentarioChanged = e => setComentario(e.target.value)
+
+    let history = useHistory();
+    
+    const handleClick = () => {
+      if (cant && destino && comentario) {
+        dispatch(
+          materialAdded({
+              id: nanoid(),
+              cant,
+              destino,
+              comentario
+          })
+        )
+        setCant('')
+        setDestino('')
+        setComentario('')
+      }
+      history.push("/generarSolicitud");
     }
-  }
+
+    return (
+      <div className="fondo-app">
+        <div className="fondo-app__app-bar flex">
+            <BackButton />
+            <p className="t-center">Detalle Item</p>
+        </div>
+        <div className="detalle-item__contenedor flex">                      
+          <div className="detalle-item__contenedor__detalle">
+            <ItemDetalle />
+            <div className="detalle-item__contenedor__detalle__inputs">
+              <input className="shadow" type="text" placeholder="Cant. Solicitada" value={cant} onChange={onCantChanged}/>
+              <input className="shadow" type="text" placeholder="Destino" value={destino} onChange={onDestinoChanged}/>
+              <input className="shadow" type="text" placeholder="Comentario" value={comentario} onChange={onComentarioChanged}/>
+            </div>
+          </div>            
+          <button type="button" className="boton-general flex shadow" onClick={handleClick}>
+            Agregar
+          </button>
+        </div>
+      </div>
+      );
+  }  
   
   function ItemDetalle() {
     let history = useHistory();
@@ -98,19 +123,6 @@ import {
           <MaterialIcon icon="arrow_back"/>  
         </button>
       );
-    }
-  
-    function BotonEnviar() {
-      let history = useHistory();
-    
-      function handleClick() {    
-        history.push("/generarSolicitud");
-      }
-    
-      return (
-        <button type="button" className="boton-general flex shadow" onClick={handleClick}>
-          Agregar
-        </button>
-      );
     }      
-export default DetalleItem;
+
+    export default DetalleItem;

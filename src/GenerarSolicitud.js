@@ -13,31 +13,41 @@ import {
     useHistory
   } from "react-router-dom";  
 import AgregarItem from './AgregarItem';
+import { useSelector } from 'react-redux'
 
 
-class GenerarSolicitud extends React.Component {
-  render() {
-      return (
-      <div className="fondo-app">
-        <div className="fondo-app__app-bar flex">
-            <BackButton />
-            <p className="t-center">Generando solicitud</p>
-        </div>
-        <div className="generar-solicitud flex">
-          <div className="generar-solicitud__persona-retiro shadow flex">
-            <MaterialIcon icon="person"/>  
-            <p>Persona retiro</p>
-          </div>
-          
-          <div className="generar-solicitud__lista-items shadow flex flex-column">
-            <BotonAgregarItem />
-          </div>           
+export const GenerarSolicitud = () => {
+  const materiales = useSelector(state => state.materiales)
 
-          <BotonEnviar />
-        </div>
+  const renderedmateriales = materiales.map(material => (
+    <article className="post-excerpt" /* key={material.id} */>
+      <h3>{material.cant}</h3>
+      <p>{material.destino}</p>
+      <p>{material.comentario}</p>
+    </article>
+  ))
+
+  return (
+    <div className="fondo-app">
+      <div className="fondo-app__app-bar flex">
+          <BackButton />
+          <p className="t-center">Generando solicitud</p>
       </div>
-      );
-  }
+      <div className="generar-solicitud flex">
+        <div className="generar-solicitud__persona-retiro shadow flex">
+          <MaterialIcon icon="person"/>  
+          <p>Persona retiro</p>
+        </div>
+        
+        <div className="generar-solicitud__lista-items shadow flex flex-column">
+          <BotonAgregarItem />
+          {renderedmateriales}
+        </div>           
+
+        <BotonEnviar />
+      </div>
+    </div>
+  )
 }
 
 function BackButton() {
