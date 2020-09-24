@@ -18,6 +18,7 @@ import GenerarSolicitud from './GenerarSolicitud';
 import AgregarItem from './AgregarItem';
 import DetalleItem from './DetalleItem';
 import PantallaFinal from './PantallaFinal';
+import EditarItem from './EditarItem';
 import hideVirtualKeyboard from 'hide-virtual-keyboard';
 
 export default function App() {
@@ -29,6 +30,7 @@ export default function App() {
         <Route exact path="/agregarItem" component={AgregarItem} /> 
         <Route exact path="/detalleItem" component={DetalleItem} /> 
         <Route exact path="/pantallaFinal" component={PantallaFinal} /> 
+        <Route exact path="/editarItem/:materialId" component={EditarItem} /> 
       </Switch>
     )
 }

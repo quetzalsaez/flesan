@@ -32,6 +32,14 @@
   /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
 }
 
+.w100 {
+  width: 100%;
+}
+
+.mb5 {
+  margin-bottom: 5px;
+}
+
 .t-center {
   text-align: center;
 }
@@ -67,6 +75,9 @@ p {
   justify-content: center;
   align-items: center;
   font-size: 20px;
+}
+.boton-general-eliminar, .boton-general-eliminar i.material-icons {
+  color: #F30303;  
 }
 
 .fondo-app-login {

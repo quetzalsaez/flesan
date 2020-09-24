@@ -14,17 +14,28 @@ import {
   } from "react-router-dom";  
 import AgregarItem from './AgregarItem';
 import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux';
+import { materialDeleted } from './features/materiales/materialesSlice';
 
 
 export const GenerarSolicitud = () => {
   const materiales = useSelector(state => state.materiales)
 
+  const dispatch = useDispatch()
+  let history = useHistory();
+
+  const editarItem = (materialId) => {    
+    history.push("/editarItem/" + materialId);    
+  }
+
   const renderedmateriales = materiales.map(material => (
-    <article className="post-excerpt" /* key={material.id} */>
-      <h3>{material.cant}</h3>
-      <p>{material.destino}</p>
-      <p>{material.comentario}</p>
-    </article>
+    <button onClick={() => editarItem(material.id)}>
+      <article className="post-excerpt" /* key={material.id} */>
+        <h3>{material.cant}</h3>
+        <p>{material.destino}</p>
+        <p>{material.comentario}</p>
+      </article>
+    </button>
   ))
 
   return (
