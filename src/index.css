@@ -361,6 +361,14 @@ p {
   margin: 7px 0;
   border-radius: 10px;
   padding: 7px;
+  overflow: scroll;
+}
+
+.generar-solicitud__lista-items__item {
+  margin-bottom: 5px;
+}
+.generar-solicitud__lista-items__item:nth-child(2) {
+  margin-top: 5px;
 }
 
 .generar-solicitud__lista-items__agregar-item {
@@ -482,6 +490,9 @@ p {
   align-items: center;
   text-align: left;
   justify-content: space-between;
+}
+.item:last-child {
+  margin-bottom: 5px;
 }
 
 .item__nombre {

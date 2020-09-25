@@ -29,13 +29,56 @@ export const GenerarSolicitud = () => {
   }
 
   const renderedmateriales = materiales.map(material => (
-    <button onClick={() => editarItem(material.id)}>
-      <article className="post-excerpt" /* key={material.id} */>
-        <h3>{material.cant}</h3>
-        <p>{material.destino}</p>
-        <p>{material.comentario}</p>
-      </article>
-    </button>
+    <button className="item flex" onClick={() => editarItem(material.id)}>
+      <div className="item__contenedor-elementos">
+        <p className="item__nombre">
+          PORCELANATO MURO RUSTICO 60x60 TIPO 5
+        </p>
+        <div className="item__elementos flex">
+          <div className="item__elementos__elemento">
+            <div className="item__elementos__titulo">
+              Cant. solicitada
+            </div>
+            <div className="item__elementos__contenido">
+              {material.cant}
+            </div>
+          </div>
+          <div className="item__elementos__elemento">
+            <div className="item__elementos__titulo">
+              Código
+            </div>
+            <div className="item__elementos__contenido">
+              248764
+            </div>
+          </div>
+          <div className="item__elementos__elemento">
+            <div className="item__elementos__titulo">
+              Grupo
+            </div>
+            <div className="item__elementos__contenido">
+              PISOS/TECHOS/REVEST.
+            </div>
+          </div>
+          <div className="item__elementos__elemento">
+            <div className="item__elementos__titulo">
+              Destino
+            </div>
+            <div className="item__elementos__contenido">
+              {material.destino}
+            </div>
+          </div>
+          <div className="item__elementos__elemento">
+            <div className="item__elementos__titulo">
+              Comentario
+            </div>
+            <div className="item__elementos__contenido">
+              {material.comentario}
+            </div>
+          </div>
+        </div>
+      </div>
+      <MaterialIcon icon="keyboard_arrow_right"/>
+    </button>    
   ))
 
   return (
@@ -50,7 +93,7 @@ export const GenerarSolicitud = () => {
           <p>Persona retiro</p>
         </div>
         
-        <div className="generar-solicitud__lista-items shadow flex flex-column">
+        <div className="generar-solicitud__lista-items shadow">
           <BotonAgregarItem />
           {renderedmateriales}
         </div>           
@@ -97,7 +140,7 @@ function BackButton() {
     }
   
     return (
-      <button type="button" className="generar-solicitud__lista-items__agregar-item flex shadow" onClick={handleClick}>
+      <button type="button" className="generar-solicitud__lista-items__agregar-item flex shadow w100" onClick={handleClick}>
         <p>Agregar item</p>
         <MaterialIcon icon="add"/>  
       </button>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCoffee, faBuilding, faHashtag } from '@fortawesome/free-solid-svg-icons'
 import MaterialIcon, {colorPalette} from 'material-icons-react';
@@ -22,9 +22,17 @@ import {
       state.materiales.find(material => material.id === materialId)  
     )
 
-    const [cant, setCant] = useState(material.cant)
-    const [destino, setDestino] = useState(material.destino)
-    const [comentario, setComentario] = useState(material.comentario)
+    const [cant, setCant] = useState('')
+    const [destino, setDestino] = useState('')
+    const [comentario, setComentario] = useState('')
+
+    useEffect(() => {
+      if (material) {
+        setCant(material.cant)
+        setDestino(material.destino)
+        setComentario(material.comentario)
+      };
+    }, []);
 
     const dispatch = useDispatch()
 
@@ -54,6 +62,10 @@ import {
             materialId        
         })
       )
+      history.push("/generarSolicitud");
+    }
+
+    if (!material) {
       history.push("/generarSolicitud");
     }
 
