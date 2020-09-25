@@ -44,6 +44,13 @@ import {
       history.push("/generarSolicitud");
     }
 
+    const enter = e => {
+      console.log(e.key);
+      if (e.key === 'Enter') {
+        handleClick()
+      }              
+    }
+
     return (
       <div className="fondo-app">
         <div className="fondo-app__app-bar flex">
@@ -56,7 +63,7 @@ import {
             <div className="detalle-item__contenedor__detalle__inputs">
               <input className="shadow" type="text" placeholder="Cant. Solicitada" value={cant} onChange={onCantChanged}/>
               <input className="shadow" type="text" placeholder="Destino" value={destino} onChange={onDestinoChanged}/>
-              <input className="shadow" type="text" placeholder="Comentario" value={comentario} onChange={onComentarioChanged}/>
+              <input onKeyUp={enter} className="shadow" type="text" placeholder="Comentario" value={comentario} onChange={onComentarioChanged}/>
             </div>
           </div>            
           <button type="button" className="boton-general flex shadow" onClick={handleClick}>
