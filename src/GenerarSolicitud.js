@@ -29,7 +29,7 @@ export const GenerarSolicitud = () => {
   }
 
   const renderedmateriales = materiales.map(material => (
-    <button className="item flex" onClick={() => editarItem(material.id)}>
+    <button className="item flex" onClick={() => editarItem(material.id)} key={material.id}>
       <div className="item__contenedor-elementos">
         <p className="item__nombre">
           PORCELANATO MURO RUSTICO 60x60 TIPO 5
