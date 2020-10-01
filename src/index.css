@@ -567,16 +567,29 @@ p {
   margin-bottom: 0;
 }
 
+.detalle-item__modal .modal-body {
+  padding: 0;
+}
+
+.detalle-item__modal .modal-dialog {
+  top: 30vh;
+}
+
 .detalle-item__modal-cuerpo {
   align-items: center;
 }
 .detalle-item__modal-cuerpo .boton-modal {
   width: 70px;
 }
+.detalle-item__modal-cuerpo .detalle-item__modal-contenido {
+  padding: 10px;
+}
 .detalle-item__modal-cuerpo .contenedor-boton {
   width: 100%;
-  margin-top: 10px;
   justify-content: flex-end;
+  background-color: #8A8A8A;
+  padding: 10px;
+  border-radius: 0 0 10px 10px;
 }
 
 /* ---------------------------------------- Pantalla final --------------------------------- */

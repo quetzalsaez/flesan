@@ -14,9 +14,6 @@ import { useDispatch } from 'react-redux';
 import { materialAdded } from './features/materiales/materialesSlice';
 import { nanoid } from '@reduxjs/toolkit'
 import Modal from 'react-bootstrap/Modal'
-import ModalDialog from 'react-bootstrap/ModalDialog'
-import ModalHeader from 'react-bootstrap/ModalHeader'
-import ModalBody from 'react-bootstrap/ModalBody'
 
 export const DetalleItem = () => {
   const [cant, setCant] = useState('')
@@ -144,7 +141,7 @@ function ModalValidador(props) {
       <Modal className="detalle-item__modal" show={show.mostrarModal} onHide={handleClose}>       
         <Modal.Body>
           <div className="detalle-item__modal-cuerpo flex flex-column">
-            <div className="agregar-item__filtros__categorias flex">
+            <div className="detalle-item__modal-contenido flex">
               Asegúrate de rellenar todos los campos            
             </div>
             <div className="contenedor-boton flex">

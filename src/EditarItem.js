@@ -13,6 +13,7 @@ import {
   import { useDispatch } from 'react-redux';
   import { materialUpdated, materialDeleted } from './features/materiales/materialesSlice';
   import { nanoid } from '@reduxjs/toolkit'
+  import Modal from 'react-bootstrap/Modal'
   import { useSelector } from 'react-redux'
 
   export const EditarItem = ({ match }) => {
@@ -25,6 +26,7 @@ import {
     const [cant, setCant] = useState('')
     const [destino, setDestino] = useState('')
     const [comentario, setComentario] = useState('')
+    const [mostrarModal, setMostrarModal] = useState(false)
 
     useEffect(() => {
       if (material) {
@@ -51,9 +53,11 @@ import {
               destino,
               comentario
           })
-        )        
-      }
-      history.push("/generarSolicitud");
+        )    
+        history.push("/generarSolicitud");    
+      } else {
+        setMostrarModal(true)  
+      }   
     }
 
     const eliminarMaterial = () => {
@@ -63,6 +67,16 @@ import {
         })
       )
       history.push("/generarSolicitud");
+    }
+
+    const enter = e => {    
+      if (e.key === 'Enter' || e.keyCode == 13) {
+        updateMaterial()      
+      }              
+    }
+
+    const cerrarModal = () => {
+      setMostrarModal(false) 
     }
 
     if (!material) {
@@ -79,9 +93,9 @@ import {
           <div className="detalle-item__contenedor__detalle">
             <ItemDetalle />
             <div className="detalle-item__contenedor__detalle__inputs">
-              <input className="shadow" type="text" placeholder="Cant. Solicitada" value={cant} onChange={onCantChanged}/>
-              <input className="shadow" type="text" placeholder="Destino" value={destino} onChange={onDestinoChanged}/>
-              <input className="shadow" type="text" placeholder="Comentario" value={comentario} onChange={onComentarioChanged}/>
+              <input onKeyUp={enter} className="shadow" type="text" placeholder="Cant. Solicitada" value={cant} onChange={onCantChanged}/>
+              <input onKeyUp={enter} className="shadow" type="text" placeholder="Destino" value={destino} onChange={onDestinoChanged}/>
+              <input onKeyUp={enter} className="shadow" type="text" placeholder="Comentario" value={comentario} onChange={onComentarioChanged}/>
             </div>
           </div>                    
           <div>
@@ -93,6 +107,7 @@ import {
             </button>
           </div>
         </div>
+        <ModalValidador mostrarModal={mostrarModal} onChangeMostrar={cerrarModal}/>
       </div>
       );
   }  
@@ -138,6 +153,37 @@ import {
             </div>
             </div>            
         </button>
+    );
+  }
+
+  function ModalValidador(props) {
+    const [show, setShow] = useState(props.mostrarModal);
+    console.log(show.mostrarModal)
+  
+    useEffect(() => {
+      setShow(props)
+    }, [props])
+  
+    const handleClose = () => props.onChangeMostrar();
+    const handleShow = () => setShow(true);
+  
+    return (
+      <>           
+        <Modal className="detalle-item__modal" show={show.mostrarModal} onHide={handleClose}>       
+          <Modal.Body>
+            <div className="detalle-item__modal-cuerpo flex flex-column">
+              <div className="detalle-item__modal-contenido flex">
+                Asegúrate de rellenar todos los campos            
+              </div>
+              <div className="contenedor-boton flex">
+                <button type="button" className="boton-modal flex shadow" onClick={handleClose}>
+                  Ok
+                </button>
+              </div>
+            </div>
+          </Modal.Body>        
+        </Modal>
+      </>
     );
   }
   
