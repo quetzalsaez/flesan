@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import logo from './assets/images/logo.png';
 import axios from 'axios';
+import https from 'https';
 /* import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheckSquare, faCoffee } from '@fortawesome/free-solid-svg-icons' */
 import {
@@ -37,12 +38,30 @@ export default function App() {
 
 function LoginButton(props) {
   let history = useHistory();
+  
+
+  const getData = async () => {  
+
+    console.log('paso')        
+    /* fetch('https://159.138.119.95:4300/api/rest/itemGroups.xsjs', {       
+    }).then((response) => {
+      alert(response.body);      
+    })  */
+    const agent = new https.Agent({rejectUnauthorized:false})
+    agent.requests.
+    fetch('https://159.138.119.95:4300/api/rest/itemGroups.xsjs',{agent}).then((response) => {
+      alert(response.body);      
+    })  
+ 
+  }
 
   function handleClick() {
     console.log(props.name+props.pass);      
     document.activeElement.blur();
     hideVirtualKeyboard();  
-    history.push("/main");
+    getData();
+    /* history.push("/main"); */
+    
   }
 
   return (
@@ -70,22 +89,10 @@ class Login extends React.Component {
         console.log(response.data)  
       }) 
       console.log('hola'); */ 
-      fetch('http://conectadev.portal.vsoft.cl/api/jsonws/vs-bpm-screen-portlet.customize/get-list-obras', {
-        headers: {
-          'Authorization': 'Basic YXBpbW9iaWxlOi52ZXJ0aWNhbGwjMjAyMC4=',
-          'Content-Type': 'application/json',
-          /* 'Access-Control-Allow-Origin' : '*' */
-        },
-        body: {
-          'companyId': '25728',
-          'groupId': '25754',
-          'userId': '223645'
-        },
-        method: "POST",
-        mode: "no-cors"
+      fetch('https://159.138.119.95:4300/api/rest/itemGroups.xsjs', {       
       }).then((response) => {
-        /* alert(response.body); */
-        this.setState({servicio: String(response.body)});
+        alert(response.body);
+        /* this.setState({servicio: String(response.body)}); */
       }) 
     }
   
