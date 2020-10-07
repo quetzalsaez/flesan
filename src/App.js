@@ -40,18 +40,39 @@ function LoginButton(props) {
   let history = useHistory();
   
 
-  const getData = async () => {  
-
-    console.log('paso')        
+  const getData = async () => {        
     /* fetch('https://159.138.119.95:4300/api/rest/itemGroups.xsjs', {       
     }).then((response) => {
       alert(response.body);      
-    })  */
-    const agent = new https.Agent({rejectUnauthorized:false})
-    agent.requests.
-    fetch('https://159.138.119.95:4300/api/rest/itemGroups.xsjs',{agent}).then((response) => {
-      alert(response.body);      
-    })  
+    })  */        
+    const data = JSON.stringify({
+      grant_type: "password",
+      username: "admin",
+      password: "admin",
+    })
+    var config = {
+      method: 'post',
+      url: 'http://localhost:8080/token',
+      headers: { 
+        'Authorization': 'Basic YmZXRnhTYlBIWFFsSDhUdWh4eHBiSGZmYjBNYTpFUnBoUVVXeVZjbVpBM3VCZ3FXNjZzbm9CMThh', 
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      data : data
+    };
+    var headers = {
+      headers: { 
+        'Authorization': 'Basic YmZXRnhTYlBIWFFsSDhUdWh4eHBiSGZmYjBNYTpFUnBoUVVXeVZjbVpBM3VCZ3FXNjZzbm9CMThh', 
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+    }
+    axios.post('http://localhost:8080/token', data, headers).then((response) => console.log(response))
+    /* axios(config)
+    .then((response) => {
+      console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+      console.log(error);
+    }); */
  
   }
 
