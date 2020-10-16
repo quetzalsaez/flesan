@@ -11,7 +11,7 @@ import {
     useHistory
   } from "react-router-dom";   
   import { useDispatch } from 'react-redux';
-  import { materialUpdated, materialDeleted } from './features/materiales/materialesSlice';
+  import { materialUpdated, materialDeleted } from './features/estadoApp/estadoAppSlice';
   import { nanoid } from '@reduxjs/toolkit'
   import Modal from 'react-bootstrap/Modal'
   import { useSelector } from 'react-redux'
@@ -20,37 +20,33 @@ import {
     const { materialId } = match.params 
 
     const material = useSelector(state => 
-      state.materiales.find(material => material.id === materialId)  
+      state.estadoApp.materiales.find(material => material.id === materialId)  
     )
 
-    const [cant, setCant] = useState('')
-    const [destino, setDestino] = useState('')
+    const [cant, setCant] = useState('')    
     const [comentario, setComentario] = useState('')
     const [mostrarModal, setMostrarModal] = useState(false)
 
     useEffect(() => {
       if (material) {
-        setCant(material.cant)
-        setDestino(material.destino)
+        setCant(material.cant)        
         setComentario(material.comentario)
       };
     }, []);
 
     const dispatch = useDispatch()
 
-    const onCantChanged = e => setCant(e.target.value)
-    const onDestinoChanged = e => setDestino(e.target.value)
+    const onCantChanged = e => setCant(e.target.value)    
     const onComentarioChanged = e => setComentario(e.target.value)
 
     let history = useHistory();
     
     const updateMaterial = () => {
-      if (cant && destino && comentario) {
+      if (cant && comentario) {
         dispatch(
           materialUpdated({
               id: materialId,
-              cant,
-              destino,
+              cant,              
               comentario
           })
         )    
@@ -91,10 +87,11 @@ import {
         </div>
         <div className="detalle-item__contenedor flex">                      
           <div className="detalle-item__contenedor__detalle">
-            <ItemDetalle />
+            <ItemDetalle item={material} />
             <div className="detalle-item__contenedor__detalle__inputs">
-              <input onKeyUp={enter} className="shadow" type="text" placeholder="Cant. Solicitada" value={cant} onChange={onCantChanged}/>
-              <input onKeyUp={enter} className="shadow" type="text" placeholder="Destino" value={destino} onChange={onDestinoChanged}/>
+              <p className="label-input">Cant. Solicitada</p>
+              <input onKeyUp={enter} className="shadow" type="text" placeholder="Cant. Solicitada" value={cant} onChange={onCantChanged}/>              
+              <p className="label-input">Comentario</p>
               <input onKeyUp={enter} className="shadow" type="text" placeholder="Comentario" value={comentario} onChange={onComentarioChanged}/>
             </div>
           </div>                    
@@ -112,7 +109,7 @@ import {
       );
   }  
   
-  function ItemDetalle() {
+  function ItemDetalle(props) {
     let history = useHistory();
 
     function handleClick() {    
@@ -120,38 +117,42 @@ import {
     }
 
     return (
-        <button className="item flex shadow" onClick={handleClick}>
-        <div className="item__contenedor-elementos">
+        <button className="item-main flex shadow" onClick={handleClick}>
+          <div className="item__titulo">
             <p className="item__nombre">
-                PORCELANATO MURO RUSTICO 60x60 TIPO 5
+              {props.item.itemData.ItemName}
             </p>
+          </div>
+        <div className="item__info-flecha">
+          <div className="item__contenedor-elementos">            
             <div className="item__elementos flex">
-                <div className="item__elementos__elemento">
-                <div className="item__elementos__titulo">
-                    Cant. disponible
-                </div>
-                <div className="item__elementos__contenido">
-                    324 paquete
-                </div>
-                </div>
-                <div className="item__elementos__elemento">
-                <div className="item__elementos__titulo">
-                    Código
-                </div>
-                <div className="item__elementos__contenido">
-                    248764
-                </div>
-                </div>
-                <div className="item__elementos__elemento">
-                <div className="item__elementos__titulo">
-                    Grupo
-                </div>
-                <div className="item__elementos__contenido">
-                    PISOS/TECHOS/REVEST.
-                </div>
-                </div>
+              <div className="item__elementos__elemento">
+              <div className="item__elementos__titulo">
+                Cant. disponible
+              </div>
+              <div className="item__elementos__contenido">
+                {props.item.itemData.QuantityOnStock}
+              </div>
+              </div>
+              <div className="item__elementos__elemento">
+              <div className="item__elementos__titulo">
+                Código
+              </div>
+              <div className="item__elementos__contenido">
+                {props.item.itemData.ItemCode}
+              </div>
+              </div>
+              <div className="item__elementos__elemento">
+              <div className="item__elementos__titulo">
+                  Grupo
+              </div>
+              <div className="item__elementos__contenido">
+                {props.item.itemData.GroupName}  
+              </div>
+              </div>
             </div>
-            </div>            
+            </div> 
+        </div>           
         </button>
     );
   }

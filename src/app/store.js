@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit'
 
-import materialesReducer from '../features/materiales/materialesSlice'
+import estadoAppReducer from '../features/estadoApp/estadoAppSlice'
 
 export default configureStore({
   reducer: {
-    materiales: materialesReducer
+    estadoApp: estadoAppReducer
   }
 })

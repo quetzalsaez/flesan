@@ -11,44 +11,51 @@ import {
   useHistory
 } from "react-router-dom";   
 import { useDispatch } from 'react-redux';
-import { materialAdded } from './features/materiales/materialesSlice';
+import { materialAdded } from './features/estadoApp/estadoAppSlice';
 import { nanoid } from '@reduxjs/toolkit'
 import Modal from 'react-bootstrap/Modal'
 
-export const DetalleItem = () => {
-  const [cant, setCant] = useState('')
-  const [destino, setDestino] = useState('')
+export const DetalleItem = (props) => {
+  const [cant, setCant] = useState('')  
   const [comentario, setComentario] = useState('')
   const [mostrarModal, setMostrarModal] = useState(false)
+  const [mostrarModalCantidad, setMostrarModalCantidad] = useState(false)
 
   const dispatch = useDispatch()
 
-  const onCantChanged = e => setCant(e.target.value)
-  const onDestinoChanged = e => setDestino(e.target.value)
+  const onCantChanged = e => setCant(e.target.value)  
   const onComentarioChanged = e => setComentario(e.target.value)
 
   let history = useHistory();
+  console.log(props.location.state.item.QuantityOnStock)
   
   const handleClick = () => {
-    if (cant && destino && comentario) { 
-      dispatch(
-        materialAdded({
-            id: nanoid(),
-            cant,
-            destino,
-            comentario
-        })
-      )
-      setCant('')
-      setDestino('')
-      setComentario('')
-      history.push("/generarSolicitud");
+    if (cant && comentario) {     
+      if (props.location.state.item.QuantityOnStock < cant) {
+        setMostrarModalCantidad(true)  
+      } else {
+        dispatch(
+          materialAdded({
+              id: nanoid(),
+              cant,              
+              comentario,
+              itemData: props.location.state.item
+          })
+        )
+        setCant('')        
+        setComentario('')
+        history.push("/generarSolicitud");
+      }      
     } else {
       setMostrarModal(true)  
     }    
   }
   const cerrarModal = () => {
     setMostrarModal(false) 
+  }
+
+  const cerrarModalCantidad = () => {
+    setMostrarModalCantidad(false) 
   }
 
   const enter = e => {    
@@ -65,11 +72,12 @@ export const DetalleItem = () => {
       </div>
       <div className="detalle-item__contenedor flex">                      
         <div className="detalle-item__contenedor__detalle">
-          <ItemDetalle />
+          <ItemDetalle item={props.location.state.item} />
           <div className="detalle-item__contenedor__detalle__inputs">
-            <input onKeyUp={enter} className="shadow" type="text" placeholder="Cant. Solicitada" value={cant} onChange={onCantChanged}/>
-            <input onKeyUp={enter} className="shadow" type="text" placeholder="Destino" value={destino} onChange={onDestinoChanged}/>
-            <input onKeyUp={enter} className="shadow" type="text" placeholder="Comentario" value={comentario} onChange={onComentarioChanged}/>
+            <p className="label-input">Cant. Solicitada</p>
+            <input onKeyUp={enter} className="shadow" type="text" placeholder="Ingresar la cantidad deseada" value={cant} onChange={onCantChanged}/>            
+            <p className="label-input">Comentario</p>
+            <input onKeyUp={enter} className="shadow" type="text" placeholder="Agregar un comentario" value={comentario} onChange={onComentarioChanged}/>
           </div>
         </div>            
         <button type="button" className="boton-general flex shadow" onClick={handleClick}>
@@ -77,11 +85,12 @@ export const DetalleItem = () => {
         </button>
       </div>
       <ModalValidador mostrarModal={mostrarModal} onChangeMostrar={cerrarModal}/>
+      <ModalCantidad mostrarModal={mostrarModalCantidad} onChangeMostrar={cerrarModalCantidad}/>
     </div>    
   );
 }  
 
-function ItemDetalle() {
+function ItemDetalle(props) {
   let history = useHistory();
 
   function handleClick() {    
@@ -89,38 +98,42 @@ function ItemDetalle() {
   }
 
   return (
-      <button className="item flex shadow" onClick={handleClick}>
-      <div className="item__contenedor-elementos">
+      <button className="item-main flex shadow" onClick={handleClick}>
+        <div className="item__titulo">
           <p className="item__nombre">
-              PORCELANATO MURO RUSTICO 60x60 TIPO 5
+            {props.item.ItemName}
           </p>
-          <div className="item__elementos flex">
-              <div className="item__elementos__elemento">
-              <div className="item__elementos__titulo">
-                  Cant. disponible
-              </div>
-              <div className="item__elementos__contenido">
-                  324 paquete
-              </div>
-              </div>
-              <div className="item__elementos__elemento">
-              <div className="item__elementos__titulo">
-                  Código
-              </div>
-              <div className="item__elementos__contenido">
-                  248764
-              </div>
-              </div>
-              <div className="item__elementos__elemento">
-              <div className="item__elementos__titulo">
-                  Grupo
-              </div>
-              <div className="item__elementos__contenido">
-                  PISOS/TECHOS/REVEST.
-              </div>
-              </div>
-          </div>
-          </div>            
+        </div>
+        <div className="item__info-flecha flex">
+          <div className="item__contenedor-elementos">          
+            <div className="item__elementos flex">
+                <div className="item__elementos__elemento">
+                <div className="item__elementos__titulo">
+                    Cant. disponible
+                </div>
+                <div className="item__elementos__contenido">
+                    {props.item.QuantityOnStock}
+                </div>
+                </div>
+                <div className="item__elementos__elemento">
+                <div className="item__elementos__titulo">
+                    Código
+                </div>
+                <div className="item__elementos__contenido">
+                {props.item.ItemCode}
+                </div>
+                </div>
+                <div className="item__elementos__elemento">
+                <div className="item__elementos__titulo">
+                    Grupo
+                </div>
+                <div className="item__elementos__contenido">
+                {props.item.GroupName}
+                </div>
+                </div>
+            </div>
+          </div> 
+        </div>           
       </button>
   );
 }
@@ -142,7 +155,38 @@ function ModalValidador(props) {
         <Modal.Body>
           <div className="detalle-item__modal-cuerpo flex flex-column">
             <div className="detalle-item__modal-contenido flex">
-              Asegúrate de rellenar todos los campos            
+              Asegúrate de rellenar todos los datos      
+            </div>
+            <div className="contenedor-boton flex">
+              <button type="button" className="boton-modal flex shadow" onClick={handleClose}>
+                Ok
+              </button>
+            </div>
+          </div>
+        </Modal.Body>        
+      </Modal>
+    </>
+  );
+}
+
+function ModalCantidad(props) {
+  const [show, setShow] = useState(props.mostrarModal);
+  console.log(show.mostrarModal)
+
+  useEffect(() => {
+    setShow(props)
+  }, [props])
+
+  const handleClose = () => props.onChangeMostrar();
+  const handleShow = () => setShow(true);
+
+  return (
+    <>           
+      <Modal className="detalle-item__modal" show={show.mostrarModal} onHide={handleClose}>       
+        <Modal.Body>
+          <div className="detalle-item__modal-cuerpo flex flex-column">
+            <div className="detalle-item__modal-contenido flex">
+              La cantidad seleccionada no puede ser mayor a la disponible
             </div>
             <div className="contenedor-boton flex">
               <button type="button" className="boton-modal flex shadow" onClick={handleClose}>
@@ -164,7 +208,7 @@ function BackButton() {
     }
   
     return (
-      <button type="button" className="flex shadow" onClick={handleClick}>
+      <button type="button" className="flex" onClick={handleClick}>
         <MaterialIcon icon="arrow_back"/>  
       </button>
     );

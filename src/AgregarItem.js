@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCoffee, faBuilding, faHashtag } from '@fortawesome/free-solid-svg-icons'
 import Tabs from 'react-bootstrap/Tabs'
@@ -17,61 +17,118 @@ import {
   import ModalHeader from 'react-bootstrap/ModalHeader'
   import ModalBody from 'react-bootstrap/ModalBody'
   import Button from 'react-bootstrap/Button'
+  import {serviciosFlesan} from './api/servicios'
+  import { useSelector, useDispatch } from 'react-redux'
+  import { CircularProgress } from '@material-ui/core';
+  import { filtroAdded, filtroClean } from './features/estadoApp/estadoAppSlice';
 
-class AgregarItem extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {buscarValue: '', buscando: false};    
-    this.handleChange = this.handleChange.bind(this);
-    /* this.handleSubmit = this.handleSubmit.bind(this); */
-  }  
+function AgregarItem() {  
+  const [buscarValue, setBuscarValue] = useState('')
+  const [buscando, setBuscando] = useState(false)
+  const [itemsEncontrados, setItemsEncontrados] = useState('')
+  const [categorias, setCategorias] = useState([])
+  const token = useSelector(state => state.estadoApp.token)
 
-  handleChange(event) {
-    this.setState({ buscarValue: event.target.value });     
-    if (event.target.value) {
-      this.setState({buscando: true});
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    getItems()
+    dispatch(
+      filtroClean()
+    )    
+  }, [])
+
+  var getItems= async () => {
+    var servicios = new serviciosFlesan(); 
+    var respuesta = await servicios.getItems(token);     
+    setBuscando(true)
+    setItemsEncontrados(respuesta.data)         
+  }
+
+  const handleChange = async event => {    
+    var servicios = new serviciosFlesan();        
+    setBuscarValue(event.target.value)
+    /* if (buscarValue.length > 2) {
+      var respuesta = await servicios.getItems(buscarValue, token); 
+      setBuscando(true)
+      setItemsEncontrados(respuesta.data)
+      console.log(respuesta.data)
     } else {
-      this.setState({buscando: false});
-    }
+      setBuscando(false)
+    } */
+    /* if (event.target.value) {
+      setBuscando(true)
+    } else {
+      setBuscando(false)
+    } */
   }
 
-  render() {
-      return (        
-      <div className="fondo-app">        
-        <div className="fondo-app__app-bar flex">
-            <BackButton />
-            <p className="t-center">Agregar item</p>
-        </div>
-        <div className="agregar-item flex">        
-          
-          <div className="agregar-item__contenedor shadow flex flex-column">
-            <div className="agregar-item__contenedor__barra-buscar flex">
-              <div className="flex">
-                <MaterialIcon icon="search"/>  
-                <input className='agregar-item__contenedor__barra-buscar__input' name='buscarValor' type="text" value={this.state.buscarValue} placeholder='Buscar' onChange={this.handleChange} />
-              </div>
-              <Filtros />              
-            </div>
-            <ItemsList buscando={this.state.buscando} />    
-          </div>                     
-        </div>        
+  return (        
+    <div className="fondo-app">        
+      <div className="fondo-app__app-bar flex">
+          <BackButton />
+          <p className="t-center">Agregar item</p>
       </div>
-      );
-  }
+      <div className="agregar-item flex">        
+        
+        <div className="agregar-item__contenedor shadow flex flex-column">
+          <div className="agregar-item__contenedor__barra-buscar flex">
+            <div className="flex">
+              <MaterialIcon icon="search"/>  
+              <input className='agregar-item__contenedor__barra-buscar__input' name='buscarValor' type="text" value={buscarValue} placeholder='Buscar' onChange={handleChange} />
+            </div>
+            <Filtros items={categorias} />              
+          </div>
+          <ItemsList items={itemsEncontrados} buscando={buscando} />    
+        </div>                     
+      </div>        
+    </div>
+    );
 }
 
-function Filtros() {
+function Filtros(props) {
   const [show, setShow] = useState(false);
+  const [categorias, setCategorias] = useState('');
+  const token = useSelector(state => state.estadoApp.token)    
+  const categoriaSeleccionada = useSelector(state => state.estadoApp.filtro)
+  
+  const dispatch = useDispatch()  
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleClose = ((groupName)=> {
+    if (groupName != null) {
+      if (groupName != categoriaSeleccionada.groupName) {
+        dispatch(
+          filtroAdded({ 
+            groupName           
+          })
+        )
+      } else {
+        dispatch(
+          filtroClean()
+        )
+      }
+    }
+    setShow(false)
+  })
+
+  const handleShow = () => setShow(true);    
+
+  useEffect(() => {
+    getCategorias()
+  }, [])
+
+  var getCategorias= async () => {
+    var servicios = new serviciosFlesan(); 
+    var respuesta = await servicios.getCategorias(token);  
+    setCategorias(respuesta.data)      
+    console.log(categoriaSeleccionada)     
+  }
 
   return (
     <>      
       <button onClick={handleShow}>
         <MaterialIcon icon="tune"/>
       </button>
-
       <Modal className="agregar-item__filtros" show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <MaterialIcon icon="search"/>  
@@ -79,22 +136,9 @@ function Filtros() {
         </Modal.Header>
         <Modal.Body>
           <div className="agregar-item__filtros__categorias flex">
-            <button className="shadow" onClick={handleClose}>Acero</button>
-            <button className="shadow" onClick={handleClose}>Alambre</button>
-            <button className="shadow" onClick={handleClose}>Azulejos</button>
-            <button className="shadow" onClick={handleClose}>Cemento</button>
-            <button className="shadow" onClick={handleClose}>Acero</button>
-            <button className="shadow" onClick={handleClose}>Alambre</button>
-            <button className="shadow" onClick={handleClose}>Azulejos</button>
-            <button className="shadow" onClick={handleClose}>Cemento</button>
-            <button className="shadow" onClick={handleClose}>Acero</button>
-            <button className="shadow" onClick={handleClose}>Alambre</button>
-            <button className="shadow" onClick={handleClose}>Azulejos</button>
-            <button className="shadow" onClick={handleClose}>Cemento</button>
-            <button className="shadow" onClick={handleClose}>Acero</button>
-            <button className="shadow" onClick={handleClose}>Alambre</button>
-            <button className="shadow" onClick={handleClose}>Azulejos</button>
-            <button className="shadow" onClick={handleClose}>Cemento</button>            
+            {categorias ? categorias.sort((a, b) => a.GroupName.localeCompare(b.GroupName)).map((data, index) => (                
+              <button key={index} className={'shadow ' + (categoriaSeleccionada.groupName == data.GroupName ? 'fondo-naranjo' : '')} onClick={() => handleClose(data.GroupName)}>{data.GroupName}</button>
+            )) : <div className="flex circularProgress"><CircularProgress color="inherit" size="90px" thickness="2.0" /></div>}          
           </div>
         </Modal.Body>        
       </Modal>
@@ -103,79 +147,75 @@ function Filtros() {
 }
 
 function ItemsList(props) {
-  const estaBusando = props.buscando;
-  if (estaBusando) {
-    return <MostrarItems />
+  const filtroCategoria = useSelector(state => state.estadoApp.filtro)
+  console.log(filtroCategoria)
+  const estaBusando = props.buscando;         
+  const materiales = props.items ? (filtroCategoria != '' ? props.items.filter(itemName => itemName.GroupName.toUpperCase() == filtroCategoria.groupName.toUpperCase()).sort((a, b) => a.ItemName.localeCompare(b.ItemName)).map((data, index) => (    
+    <BotonItemLista data={data} />
+  )) : props.items.sort((a, b) => a.ItemName.localeCompare(b.ItemName)).map((data, index) => (    
+    <BotonItemLista data={data} />
+  ))) : null;
+
+  if (estaBusando) {    
+    return <div>
+      {materiales}
+    </div>
   } else {
-    return <OcultarItems />
+    return <div className="flex circularProgress"><CircularProgress color="inherit" size="90px" thickness="2.0" /></div>
   }
 }
 
-function BotonItemLista() {
-  let history = useHistory();
 
+
+function BotonItemLista(props) {
+  let history = useHistory();
+  console.log('data')
+  console.log(props.data)
   function handleClick() {    
-    history.push("/detalleItem");
+    history.push({
+      pathname: "/detalleItem",
+      state: { item: props.data }
+    });
   }
 
   return (
-    <button className="item flex" onClick={handleClick}>
-      <div className="item__contenedor-elementos">
-          <p className="item__nombre">
-            PORCELANATO MURO RUSTICO 60x60 TIPO 5
-          </p>
+    <button className="item-main flex shadow" onClick={handleClick}>
+      <div className="item__titulo">
+        <p className="item__nombre">
+          {props.data.ItemName}
+        </p>
+      </div>
+      <div className="item__info-flecha flex">
+        <div className="item__contenedor-elementos">          
           <div className="item__elementos flex">
             <div className="item__elementos__elemento">
               <div className="item__elementos__titulo">
                 Cant. disponible
               </div>
               <div className="item__elementos__contenido">
-                324 paquete
+              {props.data.QuantityOnStock}
               </div>
-            </div>
-            <div className="item__elementos__elemento">
-              <div className="item__elementos__titulo">
-                Código
-              </div>
-              <div className="item__elementos__contenido">
-                248764
-              </div>
-            </div>
+            </div>            
             <div className="item__elementos__elemento">
               <div className="item__elementos__titulo">
                 Grupo
               </div>
               <div className="item__elementos__contenido">
-                PISOS/TECHOS/REVEST.
+              {props.data.GroupName}
               </div>
             </div>
           </div>
         </div>
         <MaterialIcon icon="keyboard_arrow_right"/>
+      </div>
       </button>
   );
 }
 
-function MostrarItems() {
-  return (
-    <div>
-      <BotonItemLista />
-      <BotonItemLista />
-    </div>
-  );
-}
-function OcultarItems() {
-  return (
-    <div className="agregar-item__contenedor__vacio">
-      <p>Ingresa una descripción en la búsqueda para encontrar items</p>
-    </div>
-  );
-}
-
 function BackButton() {
-    let history = useHistory();
-  
-    function handleClick() {      
+    let history = useHistory();    
+    
+    function handleClick() {              
       history.push("/generarSolicitud");
     }
   

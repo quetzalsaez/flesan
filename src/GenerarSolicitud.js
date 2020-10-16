@@ -13,13 +13,14 @@ import {
     useHistory
   } from "react-router-dom";  
 import AgregarItem from './AgregarItem';
-import { useSelector } from 'react-redux'
-import { useDispatch } from 'react-redux';
-import { materialDeleted } from './features/materiales/materialesSlice';
+import { useSelector, useDispatch } from 'react-redux'
+import { materialDeleted } from './features/estadoApp/estadoAppSlice';
 
 
-export const GenerarSolicitud = () => {
-  const materiales = useSelector(state => state.materiales)
+export const GenerarSolicitud = () => {    
+  const materiales = useSelector(state => state.estadoApp.materiales)
+  const estado = useSelector(state => state.estadoApp)
+  console.log(materiales);
 
   const dispatch = useDispatch()
   let history = useHistory();
@@ -29,55 +30,59 @@ export const GenerarSolicitud = () => {
   }
 
   const renderedmateriales = materiales.map(material => (
-    <button className="item flex" onClick={() => editarItem(material.id)} key={material.id}>
-      <div className="item__contenedor-elementos">
+    <button className="item-main flex" onClick={() => editarItem(material.id)} key={material.id}>
+      <div className="item__titulo">
         <p className="item__nombre">
-          PORCELANATO MURO RUSTICO 60x60 TIPO 5
+          {material.itemData.ItemName}
         </p>
-        <div className="item__elementos flex">
-          <div className="item__elementos__elemento">
-            <div className="item__elementos__titulo">
-              Cant. solicitada
+      </div>
+      <div className="item__info-flecha flex">
+        <div className="item__contenedor-elementos">        
+          <div className="item__elementos flex">
+            <div className="item__elementos__elemento">
+              <div className="item__elementos__titulo">
+                Cant. solicitada
+              </div>
+              <div className="item__elementos__contenido">
+                {material.cant}
+              </div>
             </div>
-            <div className="item__elementos__contenido">
-              {material.cant}
+            {/* <div className="item__elementos__elemento">
+              <div className="item__elementos__titulo">
+                Código
+              </div>
+              <div className="item__elementos__contenido">
+              {material.itemData.ItemCode}
+              </div>
+            </div> */}
+            <div className="item__elementos__elemento">
+              <div className="item__elementos__titulo">
+                Grupo
+              </div>
+              <div className="item__elementos__contenido">
+              {material.itemData.GroupName}
+              </div>
             </div>
-          </div>
-          <div className="item__elementos__elemento">
-            <div className="item__elementos__titulo">
-              Código
+            {/* <div className="item__elementos__elemento">
+              <div className="item__elementos__titulo">
+                Destino
+              </div>
+              <div className="item__elementos__contenido">
+                {material.destino}
+              </div>
             </div>
-            <div className="item__elementos__contenido">
-              248764
-            </div>
-          </div>
-          <div className="item__elementos__elemento">
-            <div className="item__elementos__titulo">
-              Grupo
-            </div>
-            <div className="item__elementos__contenido">
-              PISOS/TECHOS/REVEST.
-            </div>
-          </div>
-          <div className="item__elementos__elemento">
-            <div className="item__elementos__titulo">
-              Destino
-            </div>
-            <div className="item__elementos__contenido">
-              {material.destino}
-            </div>
-          </div>
-          <div className="item__elementos__elemento">
-            <div className="item__elementos__titulo">
-              Comentario
-            </div>
-            <div className="item__elementos__contenido">
-              {material.comentario}
-            </div>
+            <div className="item__elementos__elemento">
+              <div className="item__elementos__titulo">
+                Comentario
+              </div>
+              <div className="item__elementos__contenido">
+                {material.comentario}
+              </div>
+            </div> */}
           </div>
         </div>
+        <MaterialIcon icon="keyboard_arrow_right"/>
       </div>
-      <MaterialIcon icon="keyboard_arrow_right"/>
     </button>    
   ))
 
@@ -88,9 +93,15 @@ export const GenerarSolicitud = () => {
           <p className="t-center">Generando solicitud</p>
       </div>
       <div className="generar-solicitud flex">
-        <div className="generar-solicitud__persona-retiro shadow flex">
+        {/* <div className="generar-solicitud__persona-retiro shadow flex">
           <MaterialIcon icon="person"/>  
           <p>Persona retiro</p>
+        </div> */}
+        <div className="generar-solicitud__persona-retiro">
+          <p className="label-input">Persona retiro</p>
+          <input className="shadow" type="text" placeholder="Ingresar una persona para el retiro"/>
+          <p className="label-input">Destino</p>
+          <input className="shadow" type="text" placeholder="Ingresar un lugar de destino"/>          
         </div>
         
         <div className="generar-solicitud__lista-items shadow">

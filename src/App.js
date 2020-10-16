@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import logo from './assets/images/logo.png';
-import axios from 'axios';
 import https from 'https';
 /* import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheckSquare, faCoffee } from '@fortawesome/free-solid-svg-icons' */
@@ -20,7 +19,11 @@ import AgregarItem from './AgregarItem';
 import DetalleItem from './DetalleItem';
 import PantallaFinal from './PantallaFinal';
 import EditarItem from './EditarItem';
+import {serviciosFlesan} from './api/servicios'
 import hideVirtualKeyboard from 'hide-virtual-keyboard';
+import { useDispatch } from 'react-redux';
+import { tokenSave } from './features/estadoApp/estadoAppSlice';
+import GoogleLogin from 'react-google-login';
 
 export default function App() {
     return (
@@ -36,53 +39,14 @@ export default function App() {
     )
 }
 
-function LoginButton(props) {
-  let history = useHistory();
-  
-
-  const getData = async () => {        
-    /* fetch('https://159.138.119.95:4300/api/rest/itemGroups.xsjs', {       
-    }).then((response) => {
-      alert(response.body);      
-    })  */        
-    const data = JSON.stringify({
-      grant_type: "password",
-      username: "admin",
-      password: "admin",
-    })
-    var config = {
-      method: 'post',
-      url: 'http://localhost:8080/token',
-      headers: { 
-        'Authorization': 'Basic YmZXRnhTYlBIWFFsSDhUdWh4eHBiSGZmYjBNYTpFUnBoUVVXeVZjbVpBM3VCZ3FXNjZzbm9CMThh', 
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      data : data
-    };
-    var headers = {
-      headers: { 
-        'Authorization': 'Basic YmZXRnhTYlBIWFFsSDhUdWh4eHBiSGZmYjBNYTpFUnBoUVVXeVZjbVpBM3VCZ3FXNjZzbm9CMThh', 
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-    }
-    axios.post('http://localhost:8080/token', data, headers).then((response) => console.log(response))
-    /* axios(config)
-    .then((response) => {
-      console.log(JSON.stringify(response.data));
-    })
-    .catch(function (error) {
-      console.log(error);
-    }); */
- 
-  }
+function LoginButton() {
+  let history = useHistory();  
 
   function handleClick() {
-    console.log(props.name+props.pass);      
+    /* console.log(props.name+props.pass); */      
     document.activeElement.blur();
-    hideVirtualKeyboard();  
-    getData();
-    /* history.push("/main"); */
-    
+    hideVirtualKeyboard();      
+    history.push("/main");    
   }
 
   return (
@@ -92,68 +56,78 @@ function LoginButton(props) {
   );
 }
 
-class Login extends React.Component {
-    constructor(props) {
+function Login() {
+     const [nombre, setNombre] = useState('');
+     const [pass, setPass] = useState('');
+     const [servicio, setServicio] = useState('');
+    /* constructor(props) {
       super(props);
       this.state = {nameValue: '', passValue: '', servicio: ''};    
       this.handleChange = this.handleChange.bind(this);
-      this.handleSubmit = this.handleSubmit.bind(this);
-      this.getData = this.getData.bind(this);
-    }    
-  
-    async getData() {      
-      /* const response = await axios.get(
-        'http://conectadev.portal.vsoft.cl/api/jsonws/vs-bpm-screen-portlet.customize/get-list-obras',
-        { data: {companyId: 25728, groupId: 25754, userId: 223645} },      
-        { headers: {'Authorization': 'UwnjnP6AbTQsc6bN9cx7',  'Access-Control-Allow-Origin': "*", 'Content-Type': 'application/json'} }
-      ).then((response) => {
-        console.log(response.data)  
-      }) 
-      console.log('hola'); */ 
-      fetch('https://159.138.119.95:4300/api/rest/itemGroups.xsjs', {       
-      }).then((response) => {
-        alert(response.body);
-        /* this.setState({servicio: String(response.body)}); */
-      }) 
+      this.handleSubmit = this.handleSubmit.bind(this);            
+    }   */   
+    const dispatch = useDispatch(); 
+    
+    const getToken = async () => {
+      var qs = require('qs');
+      var servicios = new serviciosFlesan();        
+      var respuesta = await servicios.getToken();    
+        console.log(respuesta["access_token"]);
+        dispatch(tokenSave([
+          respuesta["access_token"]
+        ]))       
     }
+
+    useEffect(() => {
+      getToken()
+    })              
+    
+    const handleName = e => setNombre(e.target.value);
+    const handlePass = e => setPass(e.target.value);
   
-    handleChange(event) {
-      this.setState({ [event.target.name]: event.target.value });
-    }
-  
-    async handleSubmit(event) {      
-      /* event.preventDefault();
+    /* async handleSubmit(event) {      
+      event.preventDefault();
       const response = await axios.get(
         'http://conectadev.portal.vsoft.cl/api/jsonws/vs-bpm-screen-portlet.customize/get-list-obras',
         { data: {companyId: 25728, groupId: 25754, userId: 223645} },      
         { headers: {'Authorization': 'UwnjnP6AbTQsc6bN9cx7',  'Access-Control-Allow-Origin': "*", 'Content-Type': 'application/json'} }
       ).then((response) => {
         console.log(response.data)  
-      })  */         
-      /* history.push("/home"); */
+      })          
+      history.push("/home");
+    } */
+    const responseGoogle = (response) => {
+      console.log(response);
     }
-
     
   
-    render() {
-        return (
-        <div className="fondo-app-login flex">
-            <div>
-              {/* <button onClick={this.getData}><img src={logo}/></button>              */}
-              <img src={logo}/>
-            </div>       
-            <form className='flex' onSubmit={this.handleSubmit}>
-              <label><input className='input' name='nameValue' type="text" value={this.state.nameValue} placeholder='Nombre usuario' onChange={this.handleChange} /></label>
-              <label><input className='input' name='passValue' type="password" value={this.state.passValue} placeholder='Clave' onChange={this.handleChange} /></label>
-              <p>{this.state.servicio != '' ? this.state.servicio : ''}</p>
-              {/* <input type="submit" value="Login" />       */}                    
-            </form>       
-            <LoginButton name={this.state.nameValue} pass={this.state.passValue} />
-            {/* <Link to="./Home">Tacos</Link>  */}
-            {/* <Switch>
-                <Route path="/" component={App}/>
-              </Switch> */}
-        </div>
-        );
-    }
+    return (
+      <div className="fondo-app-login flex">
+          <div>
+            {/* <button onClick={this.getData}><img src={logo}/></button>              */}
+            <img src={logo}/>
+          </div>       
+          <form className='flex' /* onSubmit={this.handleSubmit} */>
+          <GoogleLogin
+            clientId="548770568782-71nabc6upf7olc96o9rr5r7a1rg99i07.apps.googleusercontent.com"
+            render={renderProps => (
+              <button onClick={renderProps.onClick} disabled={renderProps.disabled}>This is my custom Google button</button>
+            )}
+            buttonText="Login"
+            onSuccess={responseGoogle}
+            onFailure={responseGoogle}
+            cookiePolicy={'single_host_origin'}
+          />,
+            {/* <label><input className='input' name='nameValue' type="text" value={nombre} placeholder='Nombre usuario' onChange={handleName} /></label>
+            <label><input className='input' name='passValue' type="password" value={pass} placeholder='Clave' onChange={handlePass} /></label> */}
+            <p>{servicio != '' ? servicio : ''}</p>
+            {/* <input type="submit" value="Login" />       */}                    
+          </form>       
+          <LoginButton /* name={nombre} pass={pass} */ />
+          {/* <Link to="./Home">Tacos</Link>  */}
+          {/* <Switch>
+              <Route path="/" component={App}/>
+            </Switch> */}
+      </div>
+      )
   }
